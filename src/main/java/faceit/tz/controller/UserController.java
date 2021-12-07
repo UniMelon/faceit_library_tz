@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<List<Book>> get_allBookByUserId(@PathVariable(value = "id") long user_id) {
+    public ResponseEntity<List<Book>> get_booksByUserId(@PathVariable(value = "id") long user_id) {
         List<Book> bookList = userService.findBooksByUserId(user_id);
 
         if (bookList.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,5 +65,18 @@ public class UserController {
         return "redirect:/users/{id}";
     }
 
+    @PostMapping(path="{uId}/rm-book/{bId}")
+    public String post_removeBookFromUser(@PathVariable(value = "uId") long user_id,
+                                         @PathVariable(value = "bId") long book_id) {
+
+        Optional<Book> bookOptional = bookService.findById(book_id);
+        Optional<User> userOptional = userService.findById(user_id);
+
+        if(bookOptional.isPresent() && userOptional.isPresent())
+            userService.removeBookFromUser(book_id, user_id);
+        else return "redirect:/users/{uId}";
+
+        return "redirect:/groups/{gId}/edit";
+    }
 
 }
