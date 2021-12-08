@@ -26,7 +26,7 @@ public class User {
     @JoinTable(name = "user_books",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<Book> bookList = new ArrayList<>();
+    private List<Book> booksList = new ArrayList<>();
 
     public User() {
     }

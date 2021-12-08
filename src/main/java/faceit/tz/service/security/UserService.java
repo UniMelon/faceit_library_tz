@@ -25,13 +25,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostConstruct
-    private void initData() {
-        if (findAll().isEmpty()) {
-            User user = new User("username", "password", true, Role.USER);
-            save(user);
-        }
-    }
+//    @PostConstruct
+//    private void initData() {
+//        if (findAll().isEmpty()) {
+//            User user = new User("username", "password", true, Role.USER);
+//            save(user);
+//        }
+//    }
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -48,14 +48,14 @@ public class UserService {
         User user = findById(user_id).get();
         Book book = bookService.findById(book_id).get();
 
-        user.getBookList().add(book);
+        user.getBooksList().add(book);
     }
 
     public void removeBookFromUser(Long book_id, Long user_id) {
         User user = findById(user_id).get();
         Book book = bookService.findById(book_id).get();
 
-        user.getBookList().remove(book);
+        user.getBooksList().remove(book);
     }
 
     public Optional<User> findById(Long id) {

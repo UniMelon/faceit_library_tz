@@ -6,6 +6,7 @@ import faceit.tz.service.BookService;
 import faceit.tz.service.security.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +49,7 @@ public class UserController {
 
         User user = userService.findById(user_id).get();
         List<Book> bookList = bookService.findAll();
-        bookList.removeAll(user.getBookList());
+        bookList.removeAll(user.getBooksList());
 
         model.addAttribute("bookList", bookList);
         return "";
