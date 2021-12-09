@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>User page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <div th:replace="wrapper/scripts-block :: css"></div>
+  <div th:replace="wrapper/scripts-block :: scripts"></div>
+
+</head>
+<body>
+<div th:replace="wrapper/navbar :: navbar"></div>
+    <div class="container">
+        <div id="getBooksDiv" style="padding:20px 10px 20px 50px">
+            <ul class="list-group"></ul>
+        </div>
+    </div>
+
+
+</body>
+</html>

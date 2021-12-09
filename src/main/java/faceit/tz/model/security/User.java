@@ -31,18 +31,4 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, boolean active, Role role) {
-        this.username = username;
-        this.password = password;
-        this.active = active;
-        this.role = role;
-    }
-
-    public User(Long id, String username, String password, boolean active, Role role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.active = active;
-        this.role = role;
-    }
 }

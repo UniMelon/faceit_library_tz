@@ -5,9 +5,7 @@ $(document).ready( function () {
 			"order": [[ 0, "asc" ]],
 			"aoColumns": [
 			    { "mData": "id"},
-		        { "mData": "name" },
-				{ "mData": "calendarDate" },
-				{ "mData": "condition" }
+		        { "mData": "name" }
 			]
 	 });
 
