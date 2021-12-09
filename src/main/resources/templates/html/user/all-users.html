@@ -6,34 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <div th:replace="wrapper/scripts-block :: css"></div>
+    <div th:replace="wrapper/scripts-block :: scripts"></div>
+
 </head>
 <body>
-<nav th:replace="wrapper/navbar :: navbar"></nav>
+    <div th:replace="wrapper/navbar :: navbar"></div>
 
-<div class="container" id="container">
-    <div class="col m-3">
-        <div class="row mt-5 m-1">
-            <table class="table table-hover" id="books-table">
-                <thead class="table-light">
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Role</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr itemscope="row" th:each="el: ${users}">
-                    <td th:text="${el.id}"/>
-                    <td th:text="${el.username}"/>
-                    <td th:text="${el.role}"/>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
+    <div class="container mt-3">
+        <h4>Users Table</h4>
+        <table id="usersTable" class="display">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+        </table>
     </div>
-</div>
 
-<div th:replace="wrapper/scripts-block :: scripts"></div>
 </body>
 </html>

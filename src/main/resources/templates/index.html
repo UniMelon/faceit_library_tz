@@ -1,36 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
-    <title>Books page</title>
+    <title>Index</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $.get('/rest', function(data) {
-            console.log(data);
-
-            let table = "<table class=\"table table-hover\">";
-
-            for(i=0; i<data.length; i++) {
-                table += + "<tr><td>" + data[i].id + "</td><td>" + data[i].calendarDate + "</td><td>" + data[i].condition + "</td><td>" + data[i].readerId + "</td></tr>";
-            }
-            table += "</table>";
-
-            $("#container").html(table);
-        })
-    });
-    </script>
     <div th:replace="wrapper/scripts-block :: css"></div>
+    <div th:replace="wrapper/scripts-block :: scripts"></div>
 
 </head>
 <body>
-<nav th:replace="wrapper/navbar :: navbar"></nav>
+    <div th:replace="wrapper/navbar :: navbar"></div>
 
-    <div class="container" id="container">
-
+    <div class="container">
+        <h1>Main page</h1>
     </div>
 
-<div th:replace="wrapper/scripts-block :: scripts"></div>
 </body>
 </html>

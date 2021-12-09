@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Books page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <div th:replace="wrapper/scripts-block :: css"></div>
+    <div th:replace="wrapper/scripts-block :: scripts"></div>
+
+</head>
+<body>
+    <div th:replace="wrapper/navbar :: navbar"></div>
+<!--    <div class="container">-->
+<!--        <div id="getBooksDiv" style="padding:20px 10px 20px 50px">-->
+<!--            <ul class="list-group"></ul>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="container mt-3">
+        <h4>Books Table</h4>
+
+        <div class="row mt-5 ml-0">
+            <div class="col-2">
+                <a th:href="@{/books/add}" class="btn btn-success" role="button">
+                    <span class="bi bi-plus-lg"> Add new</span>
+                </a>
+            </div>
+        </div>
+
+        <table id="booksTable" class="display">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>CalendarDate</th>
+                <th>Condition</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+</body>
+</html>

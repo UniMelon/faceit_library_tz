@@ -5,13 +5,23 @@
   <a class="navbar-brand p-1" th:href="@{/}">
     Book library
   </a>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/books}">Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/users}">Users</a>
+      </li>
+    </ul>
+  </div>
 
   <div class="dropdown d-flex ms-md-auto">
     <a href="#" class="align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
       <strong th:inline="text">Welcome, [[${#httpServletRequest.remoteUser}]]</strong>
     </a>
     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">
-      <li><a th:replace="wrapper/navbar :: users-link-active"> Users</a></li>
+      <li><a class="dropdown-item bi bi-house-door" th:href="@{/profile}"> My profile</a></li>
       <li><hr class="dropdown-divider"></hr></li>
       <form th:action="@{/logout}" method="post">
         <li><input class="dropdown-item text-danger" type="submit" value="Sign Out"/></li>
@@ -19,5 +29,3 @@
     </ul>
   </div>
 </nav>
-
-<a th:fragment="users-link-active" class="dropdown-item bi bi-at" th:href="@{/users}"> Users</a>

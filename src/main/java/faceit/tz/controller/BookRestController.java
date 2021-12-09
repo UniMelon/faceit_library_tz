@@ -3,11 +3,13 @@ package faceit.tz.controller;
 import faceit.tz.model.Book;
 import faceit.tz.service.BookService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("api/books")
 public class BookRestController {
 
     private final BookService bookService;
@@ -16,7 +18,7 @@ public class BookRestController {
         this.bookService = bookService;
     }
 
-    @GetMapping(path="/rest")
+    @GetMapping
     public List<Book> getAllObjects() {
         return bookService.findAll();
     }
