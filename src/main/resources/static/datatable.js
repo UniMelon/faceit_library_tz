@@ -4,8 +4,10 @@ $(document).ready( function () {
 			"sAjaxDataProp": "",
 			"order": [[ 0, "asc" ]],
 			"aoColumns": [
-			    { "mData": "id"},
-		        { "mData": "name" }
+			    { "mData": "id" },
+		        { "mData": "name" },
+                { "mData": "condition" },
+                { "mData": "calendarDate" }
 			]
 	 });
 

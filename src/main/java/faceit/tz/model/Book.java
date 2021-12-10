@@ -17,6 +17,8 @@ public class Book {
     private Long id;
 
     private String name;
+    private String condition;
+    private Date calendarDate;
 
     public Book() {
     }

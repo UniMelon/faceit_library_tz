@@ -74,7 +74,7 @@ public class UserRestController {
             userService.removeBookFromUser(book_id, user_id);
         else return "redirect:/users/{uId}";
 
-        return "redirect:/groups/{gId}/edit";
+        return "";
     }
 
 }

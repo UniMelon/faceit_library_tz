@@ -8,7 +8,6 @@ import faceit.tz.service.BookService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +23,6 @@ public class UserService {
         this.bookService = bookService;
         this.passwordEncoder = passwordEncoder;
     }
-
-//    @PostConstruct
-//    private void initData() {
-//        if (findAll().isEmpty()) {
-//            User user = new User("username", "password", true, Role.USER);
-//            save(user);
-//        }
-//    }
 
     public List<User> findAll() {
         return userRepository.findAll();

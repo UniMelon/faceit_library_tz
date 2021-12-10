@@ -1,6 +1,5 @@
 package faceit.tz.controller;
 
-import faceit.tz.service.security.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +13,8 @@ public class UserController {
         return "html/user/all-users";
     }
 
-    @GetMapping("{id}")
-    public String allUserInfo() {
-        return "html/user/detail-user";
+    @GetMapping("profile")
+    public String profilePage() {
+        return "html/user/profile";
     }
 }
