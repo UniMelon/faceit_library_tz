@@ -27,13 +27,6 @@ public class BookService {
             return bookRepository.findById(id);
     }
 
-    public List<Book> findByName(String name) {
-        List<Book> bookList = bookRepository.findByName(name);
-
-        if (!bookList.isEmpty()) return bookList;
-        else return List.of();
-    }
-
     public void save(Book book) {
         bookRepository.save(book);
     }
