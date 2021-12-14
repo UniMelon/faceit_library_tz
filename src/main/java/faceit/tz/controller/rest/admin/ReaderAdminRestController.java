@@ -6,7 +6,6 @@ import faceit.tz.model.dto.ReaderDto;
 import faceit.tz.service.BookService;
 import faceit.tz.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +20,6 @@ public class ReaderAdminRestController {
         this.bookService = bookService;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public HttpStatus addBookToUser(@RequestBody ReaderDto readerDto) {
         Book book = bookService.findByName(readerDto.getBook());
@@ -32,7 +30,6 @@ public class ReaderAdminRestController {
         return HttpStatus.OK;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping
     public HttpStatus removeBookFromUser(@RequestBody ReaderDto readerDto) {
 

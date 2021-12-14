@@ -1,8 +1,11 @@
-insert into users(username, password, role, active) values('umelon', 'password', 'USER', true);
-insert into users(username, password, role, active) values('john', 'password', 'USER', true);
-insert into users(username, password, role, active) values('mark', 'password', 'USER', true);
-insert into users(username, password, role, active) values('clark', 'password', 'USER', true);
-insert into users(username, password, role, active) values('admin', 'password', 'ADMIN', true);
+insert into roles (name) values ('ROLE_USER'), ('ROLE_ADMIN');
+
+insert into users(username, password, active) values('admin', 'password', true);
+insert into users(username, password, active) values('john', 'password', true);
+insert into users(username, password, active) values('mark', 'password', true);
+insert into users(username, password, active) values('clark', 'password', true);
+
+insert into user_roles(user_id, role_id) values (1, 1), (1, 2), (2, 1), (3, 1), (4, 1);
 
 insert into books(name, calendar_date, condition) values('The Story of Doctor Dolittle', '1920-07-21', 'average');
 insert into books(name, calendar_date, condition) values('The Red House Mystery', '1922-04-06', 'average');
@@ -18,4 +21,3 @@ insert into books(name, calendar_date, condition) values('The Picture of Dorian 
 insert into user_books(user_id, book_id, created_on) values(1, 1, '1920-07-21');
 insert into user_books(user_id, book_id, created_on) values(1, 2, '1921-12-15');
 insert into user_books(user_id, book_id, created_on) values(1, 7, '1938-01-05');
-

@@ -5,28 +5,34 @@ import faceit.tz.model.Reader;
 import faceit.tz.model.Role;
 import faceit.tz.model.User;
 import faceit.tz.repository.ReaderRepository;
+import faceit.tz.repository.RoleRepository;
 import faceit.tz.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final BookService bookService;
     private final ReaderRepository readerRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, BookService bookService, ReaderRepository readerRepository,
+    public UserService(UserRepository userRepository, RoleRepository roleRepository,
+                       BookService bookService, ReaderRepository readerRepository,
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.bookService = bookService;
         this.readerRepository = readerRepository;
         this.passwordEncoder = passwordEncoder;
@@ -100,7 +106,9 @@ public class UserService {
         if (!user.isActive()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActive(true);
-            user.setRole(Role.USER);
+
+            Role roleUser = roleRepository.findByName("ROLE_USER");
+            user.setRoles(List.of(roleUser));
         }
         userRepository.save(user);
     }
@@ -112,4 +120,17 @@ public class UserService {
         else return null;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = findByUsername(s);
+
+        if(user == null) throw new UsernameNotFoundException("User with username %s not found!".formatted(s));
+
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getRoles().forEach(role ->
+                authorities.add(new SimpleGrantedAuthority(role.getName())));
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+
+    }
 }
