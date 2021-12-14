@@ -1,5 +1,6 @@
 package faceit.tz.controller.rest;
 
+import faceit.tz.model.Reader;
 import faceit.tz.model.dto.ReaderDto;
 import faceit.tz.model.mapper.ReaderMapper;
 import faceit.tz.service.ReaderService;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/readers")
@@ -26,10 +26,8 @@ public class ReaderRestController {
     public List<ReaderDto> get_allReaders(@RequestParam Optional<Integer> pageNo,
                                           @RequestParam Optional<Integer> pageSize) {
 
-        return readerService.findAll(pageNo, pageSize)
-                .stream()
-                .map(ReaderMapper.INSTANCE::toDto)
-                .collect(Collectors.toList());
+        List<Reader> readerList = readerService.findAll(pageNo, pageSize);
+        return ReaderMapper.INSTANCE.toDtoList(readerList);
     }
 
 //    @GetMapping("/profile")

@@ -1,5 +1,6 @@
 package faceit.tz.controller.rest;
 
+import faceit.tz.model.Book;
 import faceit.tz.model.dto.BookDto;
 import faceit.tz.model.mapper.BookMapper;
 import faceit.tz.service.BookService;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -26,10 +26,8 @@ public class BookRestController {
     public List<BookDto> getAllObjects(@RequestParam Optional<Integer> pageNo,
                                        @RequestParam Optional<Integer> pageSize) {
 
-        return bookService.findAll(pageNo, pageSize)
-                .stream()
-                .map(BookMapper.INSTANCE::toDto)
-                .collect(Collectors.toList());
+        List<Book> bookList = bookService.findAll(pageNo, pageSize);
+        return BookMapper.INSTANCE.toDtoList(bookList);
     }
 
 }
