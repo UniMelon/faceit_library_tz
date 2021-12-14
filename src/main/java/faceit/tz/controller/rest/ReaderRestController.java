@@ -1,30 +1,35 @@
 package faceit.tz.controller.rest;
 
-import faceit.tz.model.Reader;
 import faceit.tz.model.dto.ReaderDto;
-import faceit.tz.service.BookService;
-import faceit.tz.service.UserService;
+import faceit.tz.model.mapper.ReaderMapper;
+import faceit.tz.service.ReaderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/readers")
+@RequestMapping("/api/v1/readers")
 public class ReaderRestController {
 
-    private final UserService userService;
-    private final BookService bookService;
+    private final ReaderService readerService;
 
-    public ReaderRestController(UserService userService, BookService bookService) {
-        this.userService = userService;
-        this.bookService = bookService;
+    public ReaderRestController(ReaderService readerService) {
+        this.readerService = readerService;
     }
 
     @GetMapping
-    public List<ReaderDto> get_allReaders() {
-        return userService.findAllReaders();
+    public List<ReaderDto> get_allReaders(@RequestParam Optional<Integer> pageNo,
+                                          @RequestParam Optional<Integer> pageSize) {
+
+        return readerService.findAll(pageNo, pageSize)
+                .stream()
+                .map(ReaderMapper.INSTANCE::toDto)
+                .collect(Collectors.toList());
     }
 
 //    @GetMapping("/profile")

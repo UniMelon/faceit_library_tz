@@ -4,15 +4,14 @@ import faceit.tz.model.Book;
 import faceit.tz.model.Reader;
 import faceit.tz.model.Role;
 import faceit.tz.model.User;
-import faceit.tz.model.dto.ReaderDto;
-import faceit.tz.model.mapper.ReaderMapper;
 import faceit.tz.repository.ReaderRepository;
 import faceit.tz.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -33,23 +32,29 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll(Optional<Integer> pageNo, Optional<Integer> pageSize) {
+        PageRequest pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(15));
+
+        Page<User> posts = userRepository.findAll(pageable);
+        return posts.getContent();
     }
 
-    public List<ReaderDto> findAllReaders() {
-        List<ReaderDto> viewList = new ArrayList<>();
-
-        for(Reader reader : readerRepository.findAll()) {
-            Long id = reader.getId();
-            User user = reader.getUser();
-            Book book = reader.getBook();
-            LocalDate date = reader.getCreatedOn();
-            viewList.add(ReaderMapper.INSTANCE.toDto(new Reader(id, user, book, date)));
-
-        }
-        return viewList;
-    }
+//    public List<ReaderDto> findAllReaders(Optional<Integer> pageNo, Optional<Integer> pageSize) {
+//        PageRequest pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(10));
+//
+//        List<ReaderDto> viewList = new ArrayList<>();
+//        Page<Reader> posts = readerRepository.findAll(pageable);
+//
+//        for(Reader reader : posts.getContent()) {
+//            Long id = reader.getId();
+//            User user = reader.getUser();
+//            Book book = reader.getBook();
+//            LocalDate date = reader.getCreatedOn();
+//            viewList.add(ReaderMapper.INSTANCE.toDto(new Reader(id, user, book, date)));
+//
+//        }
+//        return viewList;
+//    }
 
     public void addBookToUser(Long book_id, Long user_id) {
         User user = findById(user_id).get();

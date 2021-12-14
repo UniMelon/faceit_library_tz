@@ -94,7 +94,7 @@
         $.ajax({
         					type : "POST",
         					contentType : "application/json",
-        					url : "admin/api/books/save",
+        					url : "api/v1/admin/books",
         					data : JSON.stringify(formData),
         					dataType : 'json',
         					success : function(data) {
@@ -109,11 +109,11 @@ function getAll() {
     $('#booksTable').dataTable().fnDestroy();
     $.ajax({
         type : "GET",
-        url : 'api/books',
+        url : 'api/v1/books',
         dataType: 'JSON',
         success: function(data){
             $('#booksTable').DataTable({
-                "sAjaxSource": 'api/books',
+                "sAjaxSource": 'api/v1/books',
                 "autoWidth": true,
                 "sAjaxDataProp": "",
                 "order": [ [ 0, "desc" ] ],
@@ -138,7 +138,7 @@ function getAll() {
 function deleteById(id) {
     $.ajax({
         					type : "DELETE",
-        					url : "admin/api/books/remove/"+id,
+        					url : "api/v1/admin/books/"+id,
         					dataType : 'json',
         					success : function(data) {
         					    console.log("removed by id=" + id);

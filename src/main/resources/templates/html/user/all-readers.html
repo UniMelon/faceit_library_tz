@@ -80,7 +80,7 @@
         $.ajax({
         					type : "POST",
         					contentType : "application/json",
-        					url : "admin/api/readers/add-book",
+        					url : "api/v1/admin/readers",
         					data : JSON.stringify(formData),
         					dataType : 'json',
         					success : function(data) {
@@ -95,11 +95,11 @@ function getAll() {
     $('#usersTable').dataTable().fnDestroy();
     $.ajax({
         type : "GET",
-        url : 'api/readers',
+        url : 'api/v1/readers',
         dataType: 'JSON',
         success: function(data){
             $('#usersTable').DataTable({
-                "sAjaxSource": 'api/readers',
+                "sAjaxSource": 'api/v1/readers',
                 "sAjaxDataProp": "",
                 "order": [ [ 0, "desc" ] ],
             	    "aoColumns": [
@@ -132,7 +132,7 @@ function deleteById(book, user) {
     $.ajax({
         					type : "DELETE",
         					contentType : "application/json",
-        					url : "admin/api/readers/remove-book",
+        					url : "api/v1/admin/readers",
         					data : JSON.stringify(formData),
         					dataType : 'json',
         					success : function(data) {

@@ -3,6 +3,8 @@ package faceit.tz.service;
 import faceit.tz.model.Book;
 import faceit.tz.model.User;
 import faceit.tz.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +19,11 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<Book> findAll(Optional<Integer> pageNo, Optional<Integer> pageSize) {
+        PageRequest pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(15));
+
+        Page<Book> posts = bookRepository.findAll(pageable);
+        return posts.getContent();
     }
 
     public Optional<Book> findById(Long id) {
