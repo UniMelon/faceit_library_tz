@@ -45,23 +45,6 @@ public class UserService implements UserDetailsService {
         return posts.getContent();
     }
 
-//    public List<ReaderDto> findAllReaders(Optional<Integer> pageNo, Optional<Integer> pageSize) {
-//        PageRequest pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(10));
-//
-//        List<ReaderDto> viewList = new ArrayList<>();
-//        Page<Reader> posts = readerRepository.findAll(pageable);
-//
-//        for(Reader reader : posts.getContent()) {
-//            Long id = reader.getId();
-//            User user = reader.getUser();
-//            Book book = reader.getBook();
-//            LocalDate date = reader.getCreatedOn();
-//            viewList.add(ReaderMapper.INSTANCE.toDto(new Reader(id, user, book, date)));
-//
-//        }
-//        return viewList;
-//    }
-
     public void addBookToUser(Long book_id, Long user_id) {
         User user = findById(user_id).get();
         Book book = bookService.findById(book_id).get();

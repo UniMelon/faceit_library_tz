@@ -11,5 +11,5 @@ public class ReaderDto {
     private Long id;
     private String username;
     private String book;
-    private LocalDate startedOn;
+    private LocalDate createdOn;
 }

@@ -1,9 +1,11 @@
 package faceit.tz.controller.rest;
 
 import faceit.tz.model.Book;
+import faceit.tz.model.BookCondition;
 import faceit.tz.model.dto.BookDto;
 import faceit.tz.model.mapper.BookMapper;
 import faceit.tz.service.BookService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

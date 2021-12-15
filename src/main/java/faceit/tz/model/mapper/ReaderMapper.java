@@ -15,6 +15,7 @@ public interface ReaderMapper {
 
     @Mapping(expression = "java( String.valueOf(reader.getBook().getName()) )", target = "book")
     @Mapping(expression = "java( String.valueOf(reader.getUser().getUsername()) )", target = "username")
+    @Mapping(source = "createdOn", target = "createdOn")
     ReaderDto toDto(Reader reader);
     List<ReaderDto> toDtoList(List<Reader> readers);
 

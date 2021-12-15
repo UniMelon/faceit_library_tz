@@ -23,8 +23,14 @@ public class BookAdminRestController {
         return BookMapper.INSTANCE.toDto(book);
     }
 
+    @GetMapping("/{id}")
+    public BookDto editBook(@PathVariable(name = "id") long id) {
+        Book book = bookService.findById(id).get();
+        return BookMapper.INSTANCE.toDto(book);
+    }
+
     @DeleteMapping("/{id}")
-    public HttpStatus postSaveBook(@PathVariable(name = "id") long id) {
+    public HttpStatus deleteBook(@PathVariable(name = "id") long id) {
         bookService.deleteById(id);
         return HttpStatus.NO_CONTENT;
     }

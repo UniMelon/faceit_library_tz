@@ -24,4 +24,21 @@ public class ReaderService {
         Page<Reader> posts = readerRepository.findAll(pageable);
         return posts.getContent();
     }
+
+    public Optional<Reader> findById(Long id) {
+        if(readerRepository.findById(id).isEmpty())
+            return Optional.empty();
+        else
+            return readerRepository.findById(id);
+    }
+
+    public void save(Reader reader) {
+        readerRepository.save(reader);
+    }
+
+    public void deleteById(Long id) {
+        Optional<Reader> readerOptional = findById(id);
+        if (readerOptional.isPresent())
+            readerRepository.deleteById(id);
+    }
 }
