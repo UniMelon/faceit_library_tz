@@ -1,5 +1,6 @@
 package faceit.tz.service;
 
+import faceit.tz.model.Book;
 import faceit.tz.model.Reader;
 import faceit.tz.repository.ReaderRepository;
 import org.springframework.data.domain.Page;

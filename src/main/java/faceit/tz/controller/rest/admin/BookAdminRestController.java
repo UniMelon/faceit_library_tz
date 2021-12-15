@@ -4,6 +4,7 @@ import faceit.tz.model.Book;
 import faceit.tz.model.dto.BookDto;
 import faceit.tz.model.mapper.BookMapper;
 import faceit.tz.service.BookService;
+import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +25,13 @@ public class BookAdminRestController {
     }
 
     @GetMapping("/{id}")
-    public BookDto editBook(@PathVariable(name = "id") long id) {
+    public BookDto editBook(@PathVariable(name = "id") long id) throws NotFoundException {
         Book book = bookService.findById(id).get();
         return BookMapper.INSTANCE.toDto(book);
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteBook(@PathVariable(name = "id") long id) {
+    public HttpStatus deleteBook(@PathVariable(name = "id") long id) throws NotFoundException {
         bookService.deleteById(id);
         return HttpStatus.NO_CONTENT;
     }

@@ -12,6 +12,7 @@ public class Reader {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @JsonIgnore
@@ -28,13 +29,6 @@ public class Reader {
     private LocalDate createdOn;
 
     public Reader() {
-    }
-
-    public Reader(Long id, User user, Book book, LocalDate createdOn) {
-        this.id = id;
-        this.user = user;
-        this.book = book;
-        this.createdOn = createdOn;
     }
 
     public Reader(User user, Book book, LocalDate createdOn) {
