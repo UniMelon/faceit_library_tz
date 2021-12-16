@@ -90,7 +90,6 @@ function deleteById(book, user) {
         data : JSON.stringify(formData),
         dataType : 'json',
         success : function(data) {
-            console.log("removed by book="+ data.book + "from user=" + data.user);
         	getAll();
         }
     });

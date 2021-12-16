@@ -9,7 +9,10 @@ import faceit.tz.service.BookService;
 import faceit.tz.service.ReaderService;
 import faceit.tz.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/admin/readers")
@@ -27,30 +30,29 @@ public class ReaderAdminRestController {
     }
 
     @PostMapping
-    public HttpStatus addBookToUser(@RequestBody ReaderDto readerDto) {
+    public ResponseEntity<ReaderDto> addBookToUser(@RequestBody @Valid ReaderDto readerDto) {
         Book book = bookService.findByName(readerDto.getBook());
         User user = userService.findByUsername(readerDto.getUsername());
 
         userService.addBookToUser(book.getId(), user.getId());
 
-        return HttpStatus.OK;
+        return new ResponseEntity<>(readerDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ReaderDto editReader(@PathVariable(name = "id") long id) {
         Reader reader = readerService.findById(id).get();
-        ReaderDto readerDto = ReaderMapper.INSTANCE.toDto(reader);
-        return readerDto;
+        return ReaderMapper.INSTANCE.toDto(reader);
     }
 
     @DeleteMapping
-    public HttpStatus removeBookFromUser(@RequestBody ReaderDto readerDto) {
+    public ResponseEntity<ReaderDto> removeBookFromUser(@RequestBody ReaderDto readerDto) {
 
         Book book = bookService.findByName(readerDto.getBook());
         User user = userService.findByUsername(readerDto.getUsername());
 
         userService.removeBookFromUser(book.getId(), user.getId());
 
-        return HttpStatus.NO_CONTENT;
+        return new ResponseEntity<>(readerDto, HttpStatus.NO_CONTENT);
     }
 }

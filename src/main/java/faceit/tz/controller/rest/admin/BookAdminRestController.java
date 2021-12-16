@@ -4,9 +4,11 @@ import faceit.tz.model.Book;
 import faceit.tz.model.dto.BookDto;
 import faceit.tz.model.mapper.BookMapper;
 import faceit.tz.service.BookService;
-import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/admin/books")
@@ -19,19 +21,20 @@ public class BookAdminRestController {
     }
 
     @PostMapping
-    public BookDto postSaveBook(@RequestBody Book book) {
+    public ResponseEntity<BookDto> postSaveBook(@RequestBody @Valid BookDto bookDto) {
+        Book book = BookMapper.INSTANCE.toEntity(bookDto);
         bookService.save(book);
-        return BookMapper.INSTANCE.toDto(book);
+        return new ResponseEntity<>(bookDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public BookDto editBook(@PathVariable(name = "id") long id) throws NotFoundException {
+    public BookDto editBook(@PathVariable(name = "id") long id) {
         Book book = bookService.findById(id).get();
         return BookMapper.INSTANCE.toDto(book);
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteBook(@PathVariable(name = "id") long id) throws NotFoundException {
+    public HttpStatus deleteBook(@PathVariable(name = "id") long id) {
         bookService.deleteById(id);
         return HttpStatus.NO_CONTENT;
     }

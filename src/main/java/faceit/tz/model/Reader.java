@@ -1,12 +1,16 @@
 package faceit.tz.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "user_books")
 public class Reader {
 
@@ -28,12 +32,13 @@ public class Reader {
     @Column(name = "created_on")
     private LocalDate createdOn;
 
-    public Reader() {
-    }
-
     public Reader(User user, Book book, LocalDate createdOn) {
         this.user = user;
         this.book = book;
         this.createdOn = createdOn;
     }
+
+    public Reader() {
+    }
+
 }
