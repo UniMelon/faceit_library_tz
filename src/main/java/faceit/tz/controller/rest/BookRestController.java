@@ -1,18 +1,14 @@
 package faceit.tz.controller.rest;
 
 import faceit.tz.model.Book;
-import faceit.tz.model.BookCondition;
 import faceit.tz.model.dto.BookDto;
 import faceit.tz.model.mapper.BookMapper;
 import faceit.tz.service.BookService;
-import org.springframework.ui.Model;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -25,11 +21,9 @@ public class BookRestController {
     }
 
     @GetMapping
-    public List<BookDto> getAllObjects(@RequestParam Optional<Integer> pageNo,
-                                       @RequestParam Optional<Integer> pageSize) {
-
-        List<Book> bookList = bookService.findAll(pageNo, pageSize);
-        return BookMapper.INSTANCE.toDtoList(bookList);
+    public Page<BookDto> getAllBooks(Pageable pageable) {
+        Page<Book> bookPage = bookService.findAll(pageable);
+        return bookPage.map(BookMapper.INSTANCE::toDto);
     }
 
 }

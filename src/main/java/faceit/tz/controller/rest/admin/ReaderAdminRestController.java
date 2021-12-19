@@ -8,6 +8,7 @@ import faceit.tz.model.mapper.ReaderMapper;
 import faceit.tz.service.BookService;
 import faceit.tz.service.ReaderService;
 import faceit.tz.service.UserService;
+import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ReaderAdminRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ReaderDto> addBookToUser(@RequestBody @Valid ReaderDto readerDto) {
+    public ResponseEntity<ReaderDto> addBookToUser(@RequestBody @Valid ReaderDto readerDto) throws NotFoundException {
         Book book = bookService.findByName(readerDto.getBook());
         User user = userService.findByUsername(readerDto.getUsername());
 
@@ -40,13 +41,13 @@ public class ReaderAdminRestController {
     }
 
     @GetMapping("/{id}")
-    public ReaderDto editReader(@PathVariable(name = "id") long id) {
-        Reader reader = readerService.findById(id).get();
+    public ReaderDto editReader(@PathVariable(name = "id") long id) throws NotFoundException {
+        Reader reader = readerService.findById(id);
         return ReaderMapper.INSTANCE.toDto(reader);
     }
 
     @DeleteMapping
-    public ResponseEntity<ReaderDto> removeBookFromUser(@RequestBody ReaderDto readerDto) {
+    public ResponseEntity<ReaderDto> removeBookFromUser(@RequestBody ReaderDto readerDto) throws NotFoundException {
 
         Book book = bookService.findByName(readerDto.getBook());
         User user = userService.findByUsername(readerDto.getUsername());

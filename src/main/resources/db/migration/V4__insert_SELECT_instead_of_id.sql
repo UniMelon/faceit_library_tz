@@ -39,4 +39,3 @@ update user_books set
     user_id=(select id from users where username='john'),
     book_id=(select id from books where name='Wuthering Heights')
     where user_id=1 and book_id=7;
-    

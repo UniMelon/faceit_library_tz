@@ -3,6 +3,8 @@ package faceit.tz.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +14,8 @@ import java.util.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Entity(name = "users")
 public class User {
 
@@ -33,6 +37,9 @@ public class User {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -51,11 +58,12 @@ public class User {
         return active == user.active
                 && Objects.equals(id, user.id)
                 && Objects.equals(username, user.username)
-                && Objects.equals(password, user.password);
+                && Objects.equals(password, user.password)
+                && Objects.equals(deleted, user.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, active);
+        return Objects.hash(id, username, password, active, deleted);
     }
 }

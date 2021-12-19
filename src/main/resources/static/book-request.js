@@ -14,8 +14,6 @@ $(document).ready(function() {
                 calendarDate : $("#date-input").val()
             }
 
-            console.log(formData);
-
             $.ajax({
                 type : "POST",
                 contentType : "application/json",
@@ -34,32 +32,45 @@ $(document).ready(function() {
 function getAll() {
     $('#booksTable').dataTable().fnDestroy();
 
-    $.ajax({
-        type : "GET",
-        url : 'api/v1/books',
-        dataType: 'JSON',
-        success: function(data){
-            $('#booksTable').DataTable({
-                "sAjaxSource": 'api/v1/books',
-                "autoWidth": true,
-                "sAjaxDataProp": "",
-                "order": [ [ 0, "desc" ] ],
-            	    "aoColumns": [
-            		    { "mData": "id" },
-            		    { "mData": "name" },
-                        { "mData": "condition" },
-                        { "mData": "calendarDate" },
-                        {
-                            "mData": null,
-                            render: function(data) {
-                                return '<button type="button" class="btn btn-warning" onclick="updateById('+data.id+')">Update</button>'
-                                +'<button type="button" class="btn btn-danger" onclick="deleteById('+data.id+')">Delete</button>'
-                            }
-                        }
-            		]
-            });
+    var showAdminColumns =  document.getElementById("isAdmin") ? true:false;
+
+    $('#booksTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "lengthChange" : false,
+        "searching": false,
+        "ajax": {
+            "url": "api/v1/books",
+            "method":"get",
+            "dataSrc": function (data) {
+                var data = data.content;
+                var all = [];
+                for (var i = 0; i < data.length; i++) {
+
+                    var row = {
+    //                    rows: response.start + i + 1,
+                        id: data[i].id,
+                        name: data[i].name,
+                        condition: data[i].condition,
+                        calendarDate: data[i].calendarDate,
+                        action: '<button type="button" class="btn btn-warning" onclick="updateById('+data[i].id+')">Update</button>'
+                              +'<button type="button" class="btn btn-danger" onclick="deleteById('+data[i].id+')">Delete</button>'
+                    };
+                    all.push(row);
+                }
+                return all;
+            }
+
         },
+        "columns": [
+            { "data": "id"},
+            { "data": "name"},
+            { "data": "condition"},
+            { "data": "calendarDate"},
+            { "data": "action", visible: showAdminColumns}
+        ]
     });
+
 }
 
 function updateById(id) {

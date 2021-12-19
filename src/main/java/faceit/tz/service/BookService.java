@@ -1,14 +1,11 @@
 package faceit.tz.service;
 
 import faceit.tz.model.Book;
-import faceit.tz.model.User;
 import faceit.tz.repository.BookRepository;
+import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -19,18 +16,12 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> findAll(Optional<Integer> pageNo, Optional<Integer> pageSize) {
-        PageRequest pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(15));
-
-        Page<Book> posts = bookRepository.findAll(pageable);
-        return posts.getContent();
+    public Page<Book> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
-    public Optional<Book> findById(Long id) {
-        if(bookRepository.findById(id).isEmpty())
-            return Optional.empty();
-        else
-            return bookRepository.findById(id);
+    public Book findById(Long id) throws NotFoundException {
+        return bookRepository.findById(id).orElseThrow(() -> new NotFoundException("book not exists"));
     }
 
     public void save(Book book) {
@@ -38,15 +29,10 @@ public class BookService {
     }
 
     public void deleteById(Long id) {
-        Optional<Book> bookOptional = findById(id);
-        if (bookOptional.isPresent())
-            bookRepository.deleteById(id);
+        bookRepository.deleteById(id);
     }
 
     public Book findByName(String name) {
-        Book book = bookRepository.findByName(name);
-
-        if (book != null) return book;
-        else return null;
+        return bookRepository.findByName(name);
     }
 }

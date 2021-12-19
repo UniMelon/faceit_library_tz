@@ -3,6 +3,8 @@ package faceit.tz.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +15,8 @@ import java.util.Set;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@SQLDelete(sql = "UPDATE books SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Entity(name = "books")
 public class Book {
 
@@ -30,6 +34,9 @@ public class Book {
     @Column(name = "calendar_date")
     private LocalDate calendarDate;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @OneToMany(mappedBy = "book")
     private Set<Reader> users = new HashSet<>();
 
@@ -41,11 +48,12 @@ public class Book {
         return Objects.equals(id, book.id)
                 && Objects.equals(name, book.name)
                 && Objects.equals(condition, book.condition)
-                && Objects.equals(calendarDate, book.calendarDate);
+                && Objects.equals(calendarDate, book.calendarDate)
+                && Objects.equals(deleted, book.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, condition, calendarDate);
+        return Objects.hash(id, name, condition, calendarDate, deleted);
     }
 }

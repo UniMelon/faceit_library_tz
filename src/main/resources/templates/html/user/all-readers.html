@@ -16,6 +16,8 @@
         <div class="col m-3">
             <form id="frmReader" sec:authorize="hasAuthority('ROLE_ADMIN')">
 
+                <input type="hidden" id="isAdmin" sec:authorize="hasAuthority('ROLE_ADMIN')">
+
                 <div class="form-group">
                     <div class="col-4">
                         <label for="user-select" class="col-form-label">Username</label>
@@ -47,7 +49,7 @@
         </div>
 
         <h4>Readers Table</h4>
-        <table id="usersTable" class="display">
+        <table id="readersTable" class="display">
             <thead>
             <tr>
                 <th>Id</th>

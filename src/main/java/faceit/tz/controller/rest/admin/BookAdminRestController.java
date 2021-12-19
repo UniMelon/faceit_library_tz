@@ -4,6 +4,9 @@ import faceit.tz.model.Book;
 import faceit.tz.model.dto.BookDto;
 import faceit.tz.model.mapper.BookMapper;
 import faceit.tz.service.BookService;
+import javassist.NotFoundException;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +31,8 @@ public class BookAdminRestController {
     }
 
     @GetMapping("/{id}")
-    public BookDto editBook(@PathVariable(name = "id") long id) {
-        Book book = bookService.findById(id).get();
+    public BookDto editBook(@PathVariable(name = "id") long id) throws NotFoundException {
+        Book book = bookService.findById(id);
         return BookMapper.INSTANCE.toDto(book);
     }
 

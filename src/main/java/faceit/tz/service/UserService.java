@@ -7,8 +7,9 @@ import faceit.tz.model.User;
 import faceit.tz.repository.ReaderRepository;
 import faceit.tz.repository.RoleRepository;
 import faceit.tz.repository.UserRepository;
+import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -38,16 +42,13 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> findAll(Optional<Integer> pageNo, Optional<Integer> pageSize) {
-        PageRequest pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(15));
-
-        Page<User> posts = userRepository.findAll(pageable);
-        return posts.getContent();
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
-    public void addBookToUser(Long book_id, Long user_id) {
-        User user = findById(user_id).get();
-        Book book = bookService.findById(book_id).get();
+    public void addBookToUser(Long book_id, Long user_id) throws NotFoundException {
+        User user = findById(user_id);
+        Book book = bookService.findById(book_id);
 
         if(user != null && book != null) {
             Reader reader = new Reader(user, book, LocalDate.now());
@@ -57,9 +58,9 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void removeBookFromUser(Long book_id, Long user_id) {
-        User user = findById(user_id).get();
-        Book book = bookService.findById(book_id).get();
+    public void removeBookFromUser(Long book_id, Long user_id) throws NotFoundException {
+        User user = findById(user_id);
+        Book book = bookService.findById(book_id);
 
         if(user != null && book != null) {
             for (Iterator<Reader> iterator = user.getBooks().iterator(); iterator.hasNext(); ) {
@@ -74,9 +75,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public Optional<User> findById(Long id) {
-        if(userRepository.findById(id).isEmpty()) return Optional.empty();
-        else return userRepository.findById(id);
+    public User findById(Long id) throws NotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("user not exists"));
     }
 
     public boolean isUserExist(User user) {
@@ -96,12 +96,8 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    //fix
     public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-
-        if (user != null) return user;
-        else return null;
+        return userRepository.findByUsername(username);
     }
 
     @Override

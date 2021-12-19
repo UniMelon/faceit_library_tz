@@ -13,8 +13,6 @@ $(document).ready(function() {
                 book : $("#book-select").val()
             }
 
-            console.log(formData);
-
             $.ajax({
                 type : "POST",
                 contentType : "application/json",
@@ -31,33 +29,45 @@ $(document).ready(function() {
  })
 
 function getAll() {
-    $('#usersTable').dataTable().fnDestroy();
+    $('#readersTable').dataTable().fnDestroy();
 
-    $.ajax({
-        type : "GET",
-        url : 'api/v1/readers',
-        dataType: 'JSON',
-        success: function(data){
-            $('#usersTable').DataTable({
-                "sAjaxSource": 'api/v1/readers',
-                "sAjaxDataProp": "",
-                "order": [ [ 0, "desc" ] ],
-            	    "aoColumns": [
-            		    { "mData": "id" },
-            		    { "mData": "username" },
-                        { "mData": "book" },
-                        { "mData": "createdOn" },
-                        {
-                            "mData": null,
-                            render: function(data) {
-                                return '<button type="button" class="btn btn-warning" onclick="updateById('+data.id+');">Update</button>'
-                                + '<button type="button" class="btn btn-danger" onclick="deleteById(\''+data.book+'\',\'' + data.username+'\');">Delete</button>'
-                            }
-                        }
-            		]
-            });
-        },
-    });
+    var showAdminColumns =  document.getElementById("isAdmin") ? true:false;
+
+    $('#readersTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "lengthChange" : false,
+            "searching": false,
+            "ajax": {
+                "url": "api/v1/readers",
+                "method":"get",
+                "dataSrc": function (data) {
+                    var data = data.content;
+                    var all = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var row = {
+        //                    rows: response.start + i + 1,
+                            id: data[i].id,
+                            username: data[i].username,
+                            book: data[i].book,
+                            createdOn: data[i].createdOn,
+                            action: '<button type="button" class="btn btn-warning" onclick="updateById('+data[i].id+');">Update</button>'
+                                  + '<button type="button" class="btn btn-danger" onclick="deleteById(\''+data[i].book+'\',\'' + data[i].username+'\');">Delete</button>'
+                        };
+                        all.push(row);
+                    }
+                    return all;
+                }
+
+            },
+            "columns": [
+                { "data": "id"},
+                { "data": "username"},
+                { "data": "book"},
+                { "data": "createdOn"},
+                { "data": "action", visible: showAdminColumns}
+            ]
+        });
 
 }
 

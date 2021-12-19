@@ -16,6 +16,8 @@
         <div class="col m-3">
             <form id="frmBook" sec:authorize="hasAuthority('ROLE_ADMIN')">
 
+                <input type="hidden" id="isAdmin" sec:authorize="hasAuthority('ROLE_ADMIN')">
+
                 <div class="form-group">
                     <div class="col-4">
                         <label for="name-input" class="col-form-label">Name</label>
