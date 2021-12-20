@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReaderService {
 
@@ -18,6 +20,10 @@ public class ReaderService {
 
     public Page<Reader> findAll(Pageable pageable) {
         return readerRepository.findAll(pageable);
+    }
+
+    public List<Reader> findAll() {
+        return readerRepository.findAll();
     }
 
     public Reader findById(Long id) throws NotFoundException {

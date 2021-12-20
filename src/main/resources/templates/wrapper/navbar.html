@@ -11,7 +11,7 @@
         <a class="nav-link" th:href="@{/books}">Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/readers}">Users</a>
+        <a class="nav-link" th:href="@{/readers}">Readers club</a>
       </li>
     </ul>
   </div>
@@ -21,7 +21,7 @@
       <strong th:inline="text">Welcome, [[${#httpServletRequest.remoteUser}]]</strong>
     </a>
     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">
-      <li><a class="dropdown-item bi bi-house-door" th:href="@{/users/profile}"> My library</a></li>
+      <li><a class="dropdown-item bi bi-house-door" th:href="@{/profile}"> My library</a></li>
       <li><hr class="dropdown-divider"></hr></li>
       <form th:action="@{/logout}" method="post">
         <li><input class="dropdown-item text-danger" type="submit" value="Sign Out"/></li>

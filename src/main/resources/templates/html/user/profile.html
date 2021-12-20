@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
+    <meta charset="UTF-8"/>
+    <title>Readers page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <div th:replace="wrapper/scripts-block :: css"></div>
+    <div th:replace="wrapper/scripts-block :: scripts"></div>
+    <script type="text/javascript" src="/profile-request.js"></script>
 </head>
 <body>
-<h4 th:text="'Profile: @user' +${id}"/>
+<div th:replace="wrapper/navbar :: navbar"></div>
+
+<div class="container mt-3">
+    <div class="col m-3">
+        <form id="frmRemoteUser">
+
+            <div class="form-group mt-2">
+                <div class="col-4">
+                    <label for="book-select" class="col-form-label">Book</label>
+                    <div class="col">
+                        <select id="book-select" name="book" class="js-example-basic-single" style="width: 70%;" required>
+                            <option value="">Select book</option>
+                            <option th:each="i : ${booksList}" th:value="${i.getName()}" th:text="${i.getName()}">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3 offset-md-2">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <h4>My library</h4>
+    <table id="userPersonalBooks" class="display">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Book</th>
+            <th>Date</th>
+            <th>#Action</th>
+        </tr>
+        </thead>
+    </table>
+</div>
 </body>
 </html>

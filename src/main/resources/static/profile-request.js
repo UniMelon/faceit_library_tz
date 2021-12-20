@@ -1,22 +1,21 @@
 $(document).ready(function() {
     getAll();
 
-    $("#frmReader").submit(function(event) {
+    $("#frmRemoteUser").submit(function(event) {
  	    event.preventDefault();
- 		addReader();
+ 		addBookToRemoteUser();
  	});
 
-    function addReader() {
-        if($("#frmReader").valid()) {
+    function addBookToRemoteUser() {
+        if($("#frmRemoteUser").valid()) {
             var formData = {
-                username : $("#user-select").val(),
                 book : $("#book-select").val()
             }
 
             $.ajax({
                 type : "POST",
                 contentType : "application/json",
-                url : "api/v1/admin/readers",
+                url : "api/v1/profile",
                 data : JSON.stringify(formData),
                 dataType : 'json',
                 success : function(data) {
@@ -29,44 +28,39 @@ $(document).ready(function() {
  })
 
 function getAll() {
-    $('#readersTable').dataTable().fnDestroy();
+    $('#userPersonalBooks').dataTable().fnDestroy();
 
-    var showAdminColumns =  document.getElementById("isAdmin") ? true:false;
-
-    $('#readersTable').DataTable({
+    $('#userPersonalBooks').DataTable({
             "processing": true,
             "serverSide": true,
             "lengthChange" : false,
             "searching": false,
             "ajax": {
-                "url": "api/v1/readers",
-                "method":"get",
+                "url": "api/v1/profile",
+                "method": "get",
                 "dataSrc": function (data) {
-                    var data = data.content;
+                    var data = data;
                     var all = [];
                     for (var i = 0; i < data.length; i++) {
                         var row = {
         //                    rows: response.start + i + 1,
                             id: data[i].id,
-                            username: data[i].username,
                             book: data[i].book,
+                            user: data[i].user,
                             createdOn: data[i].createdOn,
                             action: '<button type="button" class="btn btn-warning" onclick="updateById('+data[i].id+');">Update</button>'
-                                  + '<button type="button" class="btn btn-danger" onclick="deleteById(\''+data[i].book+'\',\'' + data[i].username+'\');">Delete</button>'
+                                  + '<button type="button" class="btn btn-danger" onclick="deleteById(\''+data[i].book+'\',\'' + data[i].user+'\');">Delete</button>'
                         };
                         all.push(row);
                     }
-                    console.log(all);
                     return all;
                 }
-
             },
             "columns": [
                 { "data": "id"},
-                { "data": "username"},
                 { "data": "book"},
                 { "data": "createdOn"},
-                { "data": "action", visible: showAdminColumns}
+                { "data": "action"}
             ]
         });
 
@@ -75,7 +69,7 @@ function getAll() {
 function updateById(id) {
     $.ajax({
         type : "GET",
-        url : "api/v1/admin/readers/"+id,
+        url : "api/v1/profile/"+id,
         dataType : 'json',
         success : function(data) {
             $("#user-select").val(data.username).change();
@@ -97,7 +91,7 @@ function deleteById(book, user) {
     $.ajax({
         type : "DELETE",
         contentType : "application/json",
-        url : "api/v1/admin/readers",
+        url : "api/v1/profile",
         data : JSON.stringify(formData),
         dataType : 'json',
         success : function(data) {
