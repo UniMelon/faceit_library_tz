@@ -11,12 +11,11 @@ import faceit.tz.service.UserService;
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/profile")
@@ -33,21 +32,18 @@ public class ProfileRestController {
     }
 
     @GetMapping
-    public List<ReaderDto> viewProfile(HttpServletRequest request) {
-        User user = userService.findByUsername(request.getRemoteUser());
-        List<Reader> g = readerService.findAll()
-                .stream()
-                .filter(reader -> reader.getUser().equals(user))
-                .collect(Collectors.toList());
-        return ReaderMapper.INSTANCE.toDtoList(g);
+    public List<ReaderDto> viewProfile(Authentication auth) {
+        User principal = userService.findByUsername(auth.getName());
+        List<Reader> reader = readerService.findByUser(principal);
+        return ReaderMapper.INSTANCE.toDtoList(reader);
     }
 
     @PostMapping
-    public ResponseEntity<ReaderDto> addBookToUser(@RequestBody @Valid ReaderDto readerDto, HttpServletRequest request) throws NotFoundException {
+    public ResponseEntity<ReaderDto> addBookToUser(@RequestBody @Valid ReaderDto readerDto, Authentication auth) throws NotFoundException {
         Book book = bookService.findByName(readerDto.getBook());
-        User user = userService.findByUsername(request.getRemoteUser());
+        User principal = userService.findByUsername(auth.getName());
 
-        userService.addBookToUser(book.getId(), user.getId());
+        userService.addBookToUser(book.getId(), principal.getId());
 
         return new ResponseEntity<>(readerDto, HttpStatus.OK);
     }
@@ -59,11 +55,11 @@ public class ProfileRestController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ReaderDto> removeBookFromUser(@RequestBody ReaderDto readerDto, HttpServletRequest request) throws NotFoundException {
+    public ResponseEntity<ReaderDto> removeBookFromUser(@RequestBody ReaderDto readerDto, Authentication auth) throws NotFoundException {
         Book book = bookService.findByName(readerDto.getBook());
-        User user = userService.findByUsername(request.getRemoteUser());
+        User principal = userService.findByUsername(auth.getName());
 
-        userService.removeBookFromUser(book.getId(), user.getId());
+        userService.removeBookFromUser(book.getId(), principal.getId());
 
         return new ResponseEntity<>(readerDto, HttpStatus.NO_CONTENT);
     }
