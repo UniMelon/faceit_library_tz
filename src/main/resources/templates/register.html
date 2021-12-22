@@ -3,7 +3,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8"/>
-    <title>Login page</title>
+    <title>Registration page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <div th:replace="wrapper/scripts-block :: css"></div>
@@ -19,33 +19,32 @@
                         <img class="img-fluid d-block mx-auto mb-4"
                              src="https://faceit-team.com/images/logo/logo_header.svg" alt="">
 
-                        <form th:action="@{/login}" method="post">
+                        <form th:action="@{/register}" method="post">
 
+                            <div class="alert alert-danger" role="alert" th:text="${registrationForm}" th:if="${registrationForm}"></div>
+                            <div class="alert alert-primary" role="alert" th:text="${registrationMsg}" th:if="${registrationMsg}"></div>
                             <div class="alert alert-success" role="alert" th:text="${verifiedAccountMsg}" th:if="${verifiedAccountMsg}"></div>
+
 
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" name="username" id="username" placeholder="Username">
                                 <label for="username">Username</label>
                             </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="test@email.com">
+                                <label for="email">Email</label>
+                            </div>
+
                             <div class="form-floating mb-3">
                                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                                 <label for="password">Password</label>
                             </div>
 
-                            <div th:if="${param.error}" class="text-danger mb-4">incorrect username or password</div>
-
                             <div class="d-grid gap-2 col-12 mx-auto">
-                                <button class="btn btn-success" type="submit">Sign in</button>
+                                <button class="btn btn-success" type="submit">Sign up</button>
                             </div>
                         </form>
-
-                        <hr class="my-4">
-
-                        <p class="gl-mt-3">
-                            Don't have an account yet?
-                            <a th:href="@{/register}">Register now</a>
-                        </p>
-
                     </div>
                 </div>
             </div>

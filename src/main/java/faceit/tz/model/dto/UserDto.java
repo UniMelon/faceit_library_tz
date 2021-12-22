@@ -4,6 +4,7 @@ import faceit.tz.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Data
@@ -18,4 +19,7 @@ public class UserDto {
     private String password;
 
     private String role;
+
+    @Email
+    private String email;
 }
