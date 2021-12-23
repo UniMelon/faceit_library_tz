@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Verification mail</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
+    <div th:replace="wrapper/scripts-block :: css"></div>
+    <div th:replace="wrapper/scripts-block :: scripts"></div>
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 48px;
+        }
+    </style>
+</head>
+<body>
+    </br>
+    <p th:text="${'Welcome, ' + username}!"/>
+
+    <p>Please, visit next link for verify registration proccess:</p></br>
+    <a th:href="${'http://localhost:8080/register/' + token}" role="button">Verify account</a></br>
+
+    <p>
+        <a href="https://faceit-team.com/">
+            <img src="https://faceit-team.com/images/logo/logo_header.svg" alt="faceit-team" height="70" width="300"/>
+        </a>
+    </p></br>
+
+    <p>
+        Regards, <br />
+        <em th:text="${sign}"></em>
+    <p th:text="${location}"></p>
+    </p>
+</body>
+</html>

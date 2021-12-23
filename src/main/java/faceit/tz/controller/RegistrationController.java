@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @Controller
@@ -28,7 +29,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String userRegistration(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String userRegistration(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) throws MessagingException {
         if (bindingResult.hasErrors())
             return "register";
 

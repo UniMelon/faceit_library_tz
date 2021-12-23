@@ -2,9 +2,16 @@ package faceit.tz.service.mail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 @Component
 public class EmailSender {
@@ -15,14 +22,26 @@ public class EmailSender {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void send(String emailTo, String subject, String message) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
-        mailMessage.setFrom(emailFrom);
-        mailMessage.setTo(emailTo);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
+    public void sendEmail(String emailTo, String subject, Map<String, Object> templateModel) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message,
+                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                StandardCharsets.UTF_8.name());
 
-        javaMailSender.send(mailMessage);
+        Context thymeleafContext = new Context();
+        thymeleafContext.setVariables(templateModel);
+
+        String htmlBody = templateEngine.process("mail-template", thymeleafContext);
+
+        helper.setFrom(emailFrom);
+        helper.setTo(emailTo);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
+
+        javaMailSender.send(message);
     }
+
 }

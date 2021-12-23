@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -87,7 +88,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email) != null || findByUsername(username) != null;
     }
 
-    public void register(User user) {
+    public void register(User user) throws MessagingException {
         if (isUserExist(user.getUsername(), user.getEmail()))
             throw new UserAlreadyExistException("User already exists!");
 
@@ -102,11 +103,17 @@ public class UserService implements UserDetailsService {
         sendRegistrationConfirmationEmail(user);
     }
 
-    private void sendRegistrationConfirmationEmail(User user) {
+    private void sendRegistrationConfirmationEmail(User user) throws MessagingException {
         String message = String.format("Welcome, %s!\nPlease, visit next link for verify registration proccess: " +
                 "http://localhost:8080/api/v1/register/%s", user.getUsername(), user.getActivationCode());
 
-        emailSender.send(user.getEmail(), "Activation code", message);
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("username", user.getUsername());
+        templateModel.put("token", user.getActivationCode());
+        templateModel.put("sign", "Java Developer");
+        templateModel.put("location", "FaceIT-team");
+
+        emailSender.sendEmail(user.getEmail(), "Activation code", templateModel);
     }
 
     public void verifyUser(String token) throws InvalidTokenException {
