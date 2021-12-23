@@ -1,6 +1,6 @@
 package faceit.tz.model.dto;
 
-import faceit.tz.model.Role;
+import faceit.tz.annotation.CustomValidPassword;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class UserDto {
     @Size(max = 32, message = "username must be up to 32 characters!")
     private String username;
 
-    @Size(min = 8, max = 32, message = "username must be between 8 and 32 characters!")
+    @CustomValidPassword
     private String password;
 
     private String role;

@@ -7,10 +7,7 @@ import faceit.tz.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -26,16 +23,15 @@ public class RegistrationController {
     }
 
     @GetMapping
-    public String register(){
+    public String register(@ModelAttribute("user") UserDto userDto){
         return "register";
     }
 
     @PostMapping
-    public String userRegistration(@Valid UserDto userDto, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("registrationForm", userDto);
+    public String userRegistration(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors())
             return "register";
-        }
+
         try {
             userService.register(UserMapper.INSTANCE.toEntity(userDto));
 
