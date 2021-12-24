@@ -1,6 +1,6 @@
 package faceit.tz.model.mapper;
 
-import faceit.tz.model.Reader;
+import faceit.tz.model.entity.Reader;
 import faceit.tz.model.dto.ReaderDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

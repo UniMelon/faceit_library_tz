@@ -17,6 +17,18 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+
+        <encoding>UTF-8</encoding>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+        <project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
+        <archetype.encoding>${encoding}</archetype.encoding>
+
+        <maven-archetype-plugin-version>3.2.0</maven-archetype-plugin-version>
+        <maven-resources-plugin-version>3.2.0</maven-resources-plugin-version>
+
+        <maven-archetype-packaging-extension-version>3.0.1</maven-archetype-packaging-extension-version>
+
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     </properties>
 

@@ -1,5 +1,6 @@
-package faceit.tz.model;
+package faceit.tz.model.entity;
 
+import faceit.tz.annotation.CustomValidPassword;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -25,12 +28,15 @@ public class User {
     private Long id;
 
     @Column(name = "username")
+    @Size(max = 32)
     private String username;
 
     @Column(name = "password")
+    @CustomValidPassword
     private String password;
 
     @Column(name = "email")
+    @Email
     private String email;
 
     @Column(name = "active")

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
-    <title>Index</title>
+    <title th:text="#{title.index}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <div th:replace="wrapper/scripts-block :: css"></div>
     <div th:replace="wrapper/scripts-block :: scripts"></div>
@@ -12,7 +12,7 @@
     <div th:replace="wrapper/navbar :: navbar"></div>
 
     <div class="container">
-        <h1>Main page</h1>
+        <h1 th:text="#{page.index}"></h1>
 
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis consequat leo, quis vulputate elit. Donec
             aliquet, felis vitae interdum sagittis, sapien lorem mollis nulla, blandit posuere lacus nulla at elit.

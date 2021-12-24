@@ -1,7 +1,7 @@
 package faceit.tz.service;
 
-import faceit.tz.model.Reader;
-import faceit.tz.model.User;
+import faceit.tz.model.entity.Reader;
+import faceit.tz.model.entity.User;
 import faceit.tz.repository.ReaderRepository;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;

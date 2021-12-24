@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Readers page</title>
+    <title th:text="#{title.readers}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <div th:replace="wrapper/scripts-block :: css"></div>
@@ -20,10 +20,10 @@
 
                 <div class="form-group">
                     <div class="col-4">
-                        <label for="user-select" class="col-form-label">Username</label>
+                        <label th:text="#{label.username}" for="user-select" class="col-form-label"></label>
                         <div class="col">
                             <select id="user-select" name="username" class="js-example-basic-single" style="width: 70%;" required>
-                                <option value="">Select user</option>
+                                <option th:text="#{select.user}" value=""></option>
                                 <option th:each="i : ${usersList}" th:value="${i.getUsername()}" th:text="${i.getUsername()}">
                             </select>
                         </div>
@@ -32,10 +32,10 @@
 
                 <div class="form-group mt-2">
                     <div class="col-4">
-                        <label for="book-select" class="col-form-label">Book</label>
+                        <label th:text="#{label.book}" for="book-select" class="col-form-label"></label>
                         <div class="col">
                             <select id="book-select" name="book" class="js-example-basic-single" style="width: 70%;" required>
-                                <option value="">Select book</option>
+                                <option th:text="#{select.book}" value=""></option>
                                 <option th:each="i : ${booksList}" th:value="${i.getName()}" th:text="${i.getName()}">
                             </select>
                         </div>
@@ -43,20 +43,20 @@
                 </div>
 
                 <div class="mt-3 offset-md-2">
-                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="submit" class="btn btn-success" th:text="#{button.save}"></button>
                 </div>
             </form>
         </div>
 
-        <h4>Readers Table</h4>
+        <h4 th:text="#{table.readers}"></h4>
         <table id="readersTable" class="display">
             <thead>
             <tr>
-                <th>Id</th>
-                <th>User</th>
-                <th>Book</th>
-                <th>Date</th>
-                <th>#Action</th>
+                <th th:text="#{label.id}"></th>
+                <th th:text="#{label.user}"></th>
+                <th th:text="#{label.book}"></th>
+                <th th:text="#{label.date}"></th>
+                <th th:text="'#'+ #{label.action}"></th>
             </tr>
             </thead>
         </table>

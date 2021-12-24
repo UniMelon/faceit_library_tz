@@ -1,6 +1,6 @@
 package faceit.tz.controller.rest;
 
-import faceit.tz.model.Reader;
+import faceit.tz.model.entity.Reader;
 import faceit.tz.model.dto.ReaderDto;
 import faceit.tz.model.mapper.ReaderMapper;
 import faceit.tz.service.ReaderService;

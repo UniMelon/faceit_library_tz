@@ -2,29 +2,34 @@
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand p-1" th:href="@{/}">
-    Book library
-  </a>
+  <a th:text="#{navbar.brand}" class="navbar-brand p-1" th:href="@{/}"></a>
+
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/books}">Books</a>
+        <a class="nav-link" th:text="#{nav.link.books}" th:href="@{/books}"></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/readers}">Readers club</a>
+        <a class="nav-link" th:text="#{nav.link.readers}" th:href="@{/readers}"></a>
       </li>
     </ul>
   </div>
 
   <div class="dropdown d-flex ms-md-auto">
     <a href="#" class="align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-      <strong th:inline="text">Welcome, [[${#httpServletRequest.remoteUser}]]</strong>
+      <strong th:inline="text" th:text="#{welcome.label} + ', ' + ${#httpServletRequest.remoteUser}"></strong>
     </a>
     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">
-      <li><a class="dropdown-item bi bi-house-door" th:href="@{/profile}"> My library</a></li>
-      <li><hr class="dropdown-divider"></hr></li>
+      <li><a class="dropdown-item bi bi-house-door" th:text="#{table.my.library}" th:href="@{/profile}"></a></li>
+      <li><hr class="dropdown-divider"></li>
+
+      <li><a class="dropdown-item bi bi-flag" th:href="@{'?locale=en'}">English</a></li>
+      <li><a class="dropdown-item bi bi-flag" th:href="@{'?locale=ru'}">Русский</a></li>
+
+      <li><hr class="dropdown-divider"></li>
+
       <form th:action="@{/logout}" method="post">
-        <li><input class="dropdown-item text-danger" type="submit" value="Sign Out"/></li>
+        <li><input class="dropdown-item text-danger" type="submit" th:value="#{button.signout}"/></li>
       </form>
     </ul>
   </div>

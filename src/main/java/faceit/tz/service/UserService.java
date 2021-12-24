@@ -2,10 +2,10 @@ package faceit.tz.service;
 
 import faceit.tz.controller.exception.InvalidTokenException;
 import faceit.tz.controller.exception.UserAlreadyExistException;
-import faceit.tz.model.Book;
-import faceit.tz.model.Reader;
-import faceit.tz.model.Role;
-import faceit.tz.model.User;
+import faceit.tz.model.entity.Book;
+import faceit.tz.model.entity.Reader;
+import faceit.tz.model.entity.Role;
+import faceit.tz.model.entity.User;
 import faceit.tz.repository.ReaderRepository;
 import faceit.tz.repository.RoleRepository;
 import faceit.tz.repository.UserRepository;
@@ -104,9 +104,6 @@ public class UserService implements UserDetailsService {
     }
 
     private void sendRegistrationConfirmationEmail(User user) throws MessagingException {
-        String message = String.format("Welcome, %s!\nPlease, visit next link for verify registration proccess: " +
-                "http://localhost:8080/api/v1/register/%s", user.getUsername(), user.getActivationCode());
-
         Map<String, Object> templateModel = new HashMap<>();
         templateModel.put("username", user.getUsername());
         templateModel.put("token", user.getActivationCode());
@@ -117,9 +114,8 @@ public class UserService implements UserDetailsService {
     }
 
     public void verifyUser(String token) throws InvalidTokenException {
-        User user = userRepository.findByActivationCode(token);
-
-        if (Objects.isNull(user)) throw new InvalidTokenException("Token is not found!");
+        User user = userRepository.findByActivationCode(token)
+                .orElseThrow(() -> new InvalidTokenException("Token is not found!"));
 
         user.setActive(true);
         user.setActivationCode(null);
@@ -127,15 +123,14 @@ public class UserService implements UserDetailsService {
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User %s not found!".formatted(username)));
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = findByUsername(s);
         boolean enabled = !user.isActive();
-
-        if (user == null) throw new UsernameNotFoundException("User %s not found!".formatted(s));
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role ->

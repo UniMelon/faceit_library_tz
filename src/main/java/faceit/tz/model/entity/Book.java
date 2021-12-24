@@ -1,4 +1,4 @@
-package faceit.tz.model;
+package faceit.tz.model.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +7,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -26,12 +29,15 @@ public class Book {
     private Long id;
 
     @Column(name = "name")
+    @Size(max = 32)
     private String name;
 
     @Column(name = "condition")
+    @NotBlank
     private String condition;
 
     @Column(name = "calendar_date")
+    @PastOrPresent
     private LocalDate calendarDate;
 
     @Column(name = "deleted")

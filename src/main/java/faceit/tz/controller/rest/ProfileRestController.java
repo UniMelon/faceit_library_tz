@@ -1,8 +1,8 @@
 package faceit.tz.controller.rest;
 
-import faceit.tz.model.Book;
-import faceit.tz.model.Reader;
-import faceit.tz.model.User;
+import faceit.tz.model.entity.Book;
+import faceit.tz.model.entity.Reader;
+import faceit.tz.model.entity.User;
 import faceit.tz.model.dto.ReaderDto;
 import faceit.tz.model.mapper.ReaderMapper;
 import faceit.tz.service.BookService;
