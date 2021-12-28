@@ -84,12 +84,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("user not exists"));
     }
 
-    public boolean isUserExist(String username, String email) {
-        return userRepository.findByEmail(email) != null || findByUsername(username) != null;
-    }
-
     public void register(User user) throws MessagingException {
-        if (isUserExist(user.getUsername(), user.getEmail()))
+        if (userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail()))
             throw new UserAlreadyExistException("User already exists!");
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -107,7 +103,6 @@ public class UserService implements UserDetailsService {
         Map<String, Object> templateModel = new HashMap<>();
         templateModel.put("username", user.getUsername());
         templateModel.put("token", user.getActivationCode());
-        templateModel.put("sign", "Java Developer");
         templateModel.put("location", "FaceIT-team");
 
         emailSender.sendEmail(user.getEmail(), "Activation code", templateModel);

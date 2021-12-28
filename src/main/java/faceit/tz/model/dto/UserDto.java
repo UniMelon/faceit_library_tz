@@ -12,10 +12,10 @@ import javax.validation.constraints.Size;
 public class UserDto {
     private Long id;
 
-    @Size(max = 32, message = "username must be up to 32 characters!")
+    @Size(min = 5, max = 32, message = "{validation.size.username}")
     private String username;
 
-    @CustomValidPassword
+    @CustomValidPassword(max = 32)
     private String password;
 
     private String role;

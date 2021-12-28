@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Verification mail</title>
+    <title th:text="#{title.mail.template}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
@@ -17,10 +17,10 @@
 </head>
 <body>
     </br>
-    <p th:text="${'Welcome, ' + username}!"/>
+    <p th:text="#{p.welcome} + ', ' + ${username} +'!'"/>
 
-    <p>Please, visit next link for verify registration proccess:</p></br>
-    <a th:href="${'http://localhost:8080/register/' + token}" role="button">Verify account</a></br>
+    <p th:text="#{p.text.above.verify.link}"></p></br>
+    <a th:href="${'http://localhost:8080/register/' + token}" role="button" th:text="#{button.verify}"></a></br>
 
     <p>
         <a href="https://faceit-team.com/">
@@ -28,10 +28,7 @@
         </a>
     </p></br>
 
-    <p>
-        Regards, <br />
-        <em th:text="${sign}"></em>
+    <p th:text="#{p.regards} +','"></p></br>
     <p th:text="${location}"></p>
-    </p>
 </body>
 </html>

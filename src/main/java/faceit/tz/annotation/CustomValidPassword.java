@@ -17,9 +17,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface CustomValidPassword {
 
-    String message() default "Invalid Password";
+    String message() default "{validation.password.message}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
+    int min() default 8;
+
+    int max() default 70;
 }
