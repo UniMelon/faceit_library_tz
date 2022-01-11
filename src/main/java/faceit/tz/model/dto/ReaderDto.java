@@ -12,12 +12,12 @@ import java.time.LocalDate;
 public class ReaderDto {
     private Long id;
 
-    @Size(max = 32, message = "username must be up to 32 characters!")
+    @Size(min = 5, max = 32, message = "{validation.size.username}")
     private String username;
 
-    @Size(max = 32, message = "book name must be up to 32 characters!")
+    @Size(max = 32, message = "{validation.book.size.name}")
     private String book;
 
-    @PastOrPresent(message = "this date has not come yet!")
+    @PastOrPresent(message = "{validation.book.pastOrPresent.date}")
     private LocalDate createdOn;
 }

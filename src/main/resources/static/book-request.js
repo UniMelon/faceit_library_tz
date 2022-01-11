@@ -53,8 +53,8 @@ function getAll() {
                         name: data[i].name,
                         condition: data[i].condition,
                         calendarDate: data[i].calendarDate,
-                        action: '<button type="button" class="btn btn-warning" onclick="updateById('+data[i].id+')">Update</button>'
-                              +'<button type="button" class="btn btn-danger" onclick="deleteById('+data[i].id+')">Delete</button>'
+                        action: '<button type="button" class="btn btn-warning" onclick="updateById('+data[i].id+')"><span class="bi bi-pencil-square"></span></button>'
+                              +'<button type="button" class="btn btn-danger" onclick="deleteById('+data[i].id+')"><span class="bi bi-trash-fill"></span></button>'
                     };
                     all.push(row);
                 }

@@ -1,9 +1,10 @@
 package faceit.tz.model.dto;
 
-import faceit.tz.model.Role;
+import faceit.tz.annotation.CustomValidPassword;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Data
@@ -11,11 +12,14 @@ import javax.validation.constraints.Size;
 public class UserDto {
     private Long id;
 
-    @Size(max = 32, message = "username must be up to 32 characters!")
+    @Size(min = 5, max = 32, message = "{validation.size.username}")
     private String username;
 
-    @Size(min = 8, max = 32, message = "username must be between 8 and 32 characters!")
+    @CustomValidPassword(max = 32)
     private String password;
 
     private String role;
+
+    @Email
+    private String email;
 }

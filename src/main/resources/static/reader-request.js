@@ -51,8 +51,8 @@ function getAll() {
                             username: data[i].username,
                             book: data[i].book,
                             createdOn: data[i].createdOn,
-                            action: '<button type="button" class="btn btn-warning" onclick="updateById('+data[i].id+');">Update</button>'
-                                  + '<button type="button" class="btn btn-danger" onclick="deleteById(\''+data[i].book+'\',\'' + data[i].username+'\');">Delete</button>'
+                            action: '<button type="button" class="btn btn-warning" onclick="updateById('+data[i].id+');"><span class="bi bi-pencil-square"></span></button>'
+                                  + '<button type="button" class="btn btn-danger" onclick="deleteById(\''+data[i].book+'\',\'' + data[i].username+'\');"><span class="bi bi-trash-fill"></span></button>'
                         };
                         all.push(row);
                     }

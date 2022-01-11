@@ -1,5 +1,6 @@
-package faceit.tz.model;
+package faceit.tz.model.entity;
 
+import faceit.tz.annotation.CustomValidPassword;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -7,9 +8,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,20 +28,25 @@ public class User {
     private Long id;
 
     @Column(name = "username")
-    @NotEmpty(message = "username must not be empty!")
-    @Size(min = 6, max = 32, message = "username must be between 6 and 32 characters")
+    @Size(max = 32)
     private String username;
 
     @Column(name = "password")
-    @NotEmpty(message = "password must not be empty!")
-    @Size(min = 8, message = "password must be at least 8 characters")
+    @CustomValidPassword
     private String password;
+
+    @Column(name = "email")
+    @Email
+    private String email;
 
     @Column(name = "active")
     private boolean active;
 
     @Column(name = "deleted")
     private boolean deleted;
+
+    @Column(name = "activation_code")
+    private String activationCode;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

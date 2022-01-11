@@ -1,4 +1,4 @@
-package faceit.tz.model;
+package faceit.tz.model.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

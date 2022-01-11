@@ -1,6 +1,6 @@
 package faceit.tz.controller.rest;
 
-import faceit.tz.model.Book;
+import faceit.tz.model.entity.Book;
 import faceit.tz.model.dto.BookDto;
 import faceit.tz.model.mapper.BookMapper;
 import faceit.tz.service.BookService;

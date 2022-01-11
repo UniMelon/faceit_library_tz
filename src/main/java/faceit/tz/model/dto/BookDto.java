@@ -14,12 +14,12 @@ import java.time.LocalDate;
 public class BookDto {
     private Long id;
 
-    @Size(max = 32, message = "name must be up to 32 characters!")
+    @Size(max = 32, message = "{validation.book.size.name}")
     private String name;
 
-    @NotBlank(message = "condition must not be empty!")
+    @NotBlank(message = "{validation.book.notblank.condition}")
     private String condition;
 
-    @PastOrPresent(message = "this date has not come yet!")
+    @PastOrPresent(message = "{validation.book.pastOrPresent.date}")
     private LocalDate calendarDate;
 }

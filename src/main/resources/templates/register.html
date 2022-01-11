@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{title.register}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <div th:replace="wrapper/scripts-block :: css"></div>
+</head>
+<body>
+
+<section class="vh-100" style="background-color: #52be80">
+    <div class="container py-4 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-4 text-center">
+                        <img class="img-fluid d-block mx-auto mb-4"
+                             src="https://faceit-team.com/images/logo/logo_header.svg" alt="">
+
+                        <form th:action="@{/register}" method="post" th:object="${user}">
+
+                            <div class="alert alert-danger" role="alert" th:text="${registrationForm}" th:if="${registrationForm}"></div>
+                            <div class="alert alert-primary" role="alert" th:text="${registrationMsg}" th:if="${registrationMsg}"></div>
+                            <div class="alert alert-success" role="alert" th:text="${verifiedAccountMsg}" th:if="${verifiedAccountMsg}"></div>
+
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                                <label for="username" th:text="#{label.username}"></label>
+
+                                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="test@email.com">
+                                <label for="email" th:text="#{label.email}"></label>
+
+                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                                <label for="password" th:text="#{label.password}"></label>
+
+                                <ul class="text-danger" th:each="error: ${#fields.errors('password')}">
+                                    <li th:each="message : ${error.split(',')}">
+                                        <p class="error-message" th:text="${message}"></p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="d-grid gap-2 col-12 mx-auto">
+                                <button class="btn btn-success" type="submit" th:text="#{button.signup}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

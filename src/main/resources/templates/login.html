@@ -3,7 +3,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8"/>
-    <title>Login page</title>
+    <title th:text="#{title.login}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <div th:replace="wrapper/scripts-block :: css"></div>
@@ -21,21 +21,31 @@
 
                         <form th:action="@{/login}" method="post">
 
+                            <div class="alert alert-success" role="alert" th:text="${verifiedAccountMsg}" th:if="${verifiedAccountMsg}"></div>
+
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" name="username" id="username" placeholder="Username">
-                                <label for="username">Username</label>
+                                <label th:text="#{label.username}" for="username"></label>
                             </div>
                             <div class="form-floating mb-3">
                                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                                <label for="password">Password</label>
+                                <label th:text="#{label.password}" for="password"></label>
                             </div>
 
-                            <div th:if="${param.error}" class="text-danger mb-4">incorrect username or password</div>
+                            <div th:if="${param.error}" class="text-danger mb-4" th:text="#{param.error}"></div>
 
                             <div class="d-grid gap-2 col-12 mx-auto">
-                                <button class="btn btn-success" type="submit">Sign in</button>
+                                <button class="btn btn-success" type="submit" th:text="#{button.signin}"></button>
                             </div>
                         </form>
+
+                        <hr class="my-4">
+
+                        <div>
+                            <p class="gl-mt-3" th:text="#{p.signup}"></p>
+                            <a th:href="@{/register}" th:text="#{button.register.now}"></a>
+                        </div>
+
                     </div>
                 </div>
             </div>

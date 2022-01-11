@@ -1,6 +1,7 @@
 package faceit.tz.service;
 
-import faceit.tz.model.Reader;
+import faceit.tz.model.entity.Reader;
+import faceit.tz.model.entity.User;
 import faceit.tz.repository.ReaderRepository;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,10 @@ public class ReaderService {
 
     public List<Reader> findAll() {
         return readerRepository.findAll();
+    }
+
+    public List<Reader> findByUser(User user) {
+        return readerRepository.findByUser(user);
     }
 
     public Reader findById(Long id) throws NotFoundException {

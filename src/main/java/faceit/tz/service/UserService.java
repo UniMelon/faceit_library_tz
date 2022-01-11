@@ -1,13 +1,17 @@
 package faceit.tz.service;
 
-import faceit.tz.model.Book;
-import faceit.tz.model.Reader;
-import faceit.tz.model.Role;
-import faceit.tz.model.User;
+import faceit.tz.controller.exception.InvalidTokenException;
+import faceit.tz.controller.exception.UserAlreadyExistException;
+import faceit.tz.model.entity.Book;
+import faceit.tz.model.entity.Reader;
+import faceit.tz.model.entity.Role;
+import faceit.tz.model.entity.User;
 import faceit.tz.repository.ReaderRepository;
 import faceit.tz.repository.RoleRepository;
 import faceit.tz.repository.UserRepository;
+import faceit.tz.service.mail.EmailSender;
 import javassist.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,11 +21,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -31,6 +33,9 @@ public class UserService implements UserDetailsService {
     private final BookService bookService;
     private final ReaderRepository readerRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailSender emailSender;
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository,
                        BookService bookService, ReaderRepository readerRepository,
@@ -79,38 +84,59 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("user not exists"));
     }
 
-    public boolean isUserExist(User user) {
-        User userFromDB = findByUsername(user.getUsername());
-        if (userFromDB != null) return true;
-        else return false;
+    public void register(User user) throws MessagingException {
+        if (userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail()))
+            throw new UserAlreadyExistException("User already exists!");
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Role roleUser = roleRepository.findByName("ROLE_USER");
+        user.setRoles(Set.of(roleUser));
+        user.setActivationCode(UUID.randomUUID().toString());
+
+        userRepository.save(user);
+
+        sendRegistrationConfirmationEmail(user);
     }
 
-    public void save(User user) {
-        if (!user.isActive()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setActive(true);
+    private void sendRegistrationConfirmationEmail(User user) throws MessagingException {
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("username", user.getUsername());
+        templateModel.put("token", user.getActivationCode());
+        templateModel.put("location", "FaceIT-team");
 
-            Role roleUser = roleRepository.findByName("ROLE_USER");
-            user.setRoles(Set.of(roleUser));
-        }
+        emailSender.sendEmail(user.getEmail(), "Activation code", templateModel);
+    }
+
+    public void verifyUser(String token) throws InvalidTokenException {
+        User user = userRepository.findByActivationCode(token)
+                .orElseThrow(() -> new InvalidTokenException("Token is not found!"));
+
+        user.setActive(true);
+        user.setActivationCode(null);
         userRepository.save(user);
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User %s not found!".formatted(username)));
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = findByUsername(s);
-
-        if(user == null) throw new UsernameNotFoundException("User with username %s not found!".formatted(s));
+        boolean enabled = !user.isActive();
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role ->
                 authorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .disabled(enabled)
+                .authorities(authorities).build();
 
+        return userDetails;
     }
 }

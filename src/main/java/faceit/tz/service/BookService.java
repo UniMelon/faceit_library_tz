@@ -1,6 +1,6 @@
 package faceit.tz.service;
 
-import faceit.tz.model.Book;
+import faceit.tz.model.entity.Book;
 import faceit.tz.repository.BookRepository;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;

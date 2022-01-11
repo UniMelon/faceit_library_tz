@@ -1,10 +1,9 @@
 package faceit.tz.model.mapper;
 
-import faceit.tz.model.Book;
+import faceit.tz.model.entity.Book;
 import faceit.tz.model.dto.BookDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
