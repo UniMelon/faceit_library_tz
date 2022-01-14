@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'faceit-library'
+    build:
+      context: ""
+    container_name: app
+#    environment:
+#      - DB_SERVER=localhost
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=password
+#      - POSTGRES_DB=library_db
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8080:8080"
+
+  db:
+    image: 'postgres:latest'
+    restart: always
+    container_name: db
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=library_db
+
+  redis:
+    image: 'redis:6.2.6'
+    restart: always
+    container_name: redis
+    hostname: redishost
+    ports:
+      - "6379:6379"
