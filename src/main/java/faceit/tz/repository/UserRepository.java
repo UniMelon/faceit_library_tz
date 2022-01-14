@@ -17,9 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
-    Optional<User> findByActivationCode(String code);
-
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM users u WHERE u.username = :username OR u.email = :email")
     boolean findByUsernameOrEmail(@Param("username") String username, @Param("email") String email);

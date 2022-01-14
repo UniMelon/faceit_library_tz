@@ -6,9 +6,11 @@ import faceit.tz.model.entity.Book;
 import faceit.tz.model.entity.Reader;
 import faceit.tz.model.entity.Role;
 import faceit.tz.model.entity.User;
+import faceit.tz.model.entity.redis.VerifyToken;
 import faceit.tz.repository.ReaderRepository;
 import faceit.tz.repository.RoleRepository;
 import faceit.tz.repository.UserRepository;
+import faceit.tz.repository.redis.VerifyTokenRepository;
 import faceit.tz.service.mail.EmailSender;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final VerifyTokenRepository tokenRepository;
     private final BookService bookService;
     private final ReaderRepository readerRepository;
     private final PasswordEncoder passwordEncoder;
@@ -39,9 +42,10 @@ public class UserService implements UserDetailsService {
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository,
                        BookService bookService, ReaderRepository readerRepository,
-                       PasswordEncoder passwordEncoder) {
+                       VerifyTokenRepository tokenRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.tokenRepository = tokenRepository;
         this.bookService = bookService;
         this.readerRepository = readerRepository;
         this.passwordEncoder = passwordEncoder;
@@ -92,28 +96,43 @@ public class UserService implements UserDetailsService {
 
         Role roleUser = roleRepository.findByName("ROLE_USER");
         user.setRoles(Set.of(roleUser));
-        user.setActivationCode(UUID.randomUUID().toString());
+
+        tokenGenerate(user.getEmail());
 
         userRepository.save(user);
 
         sendRegistrationConfirmationEmail(user);
     }
 
+    private void tokenGenerate(String email) {
+        VerifyToken token = new VerifyToken();
+        token.setEmail(email);
+        token.setExpiration(5l); // minutes
+
+        tokenRepository.save(token);
+    }
+
     private void sendRegistrationConfirmationEmail(User user) throws MessagingException {
         Map<String, Object> templateModel = new HashMap<>();
         templateModel.put("username", user.getUsername());
-        templateModel.put("token", user.getActivationCode());
+
+        VerifyToken token = tokenRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new InvalidTokenException("Token is not found!"));
+        templateModel.put("token", token.getId());
+
         templateModel.put("location", "FaceIT-team");
 
         emailSender.sendEmail(user.getEmail(), "Activation code", templateModel);
     }
 
     public void verifyUser(String token) throws InvalidTokenException {
-        User user = userRepository.findByActivationCode(token)
+        VerifyToken verifyToken = tokenRepository.findByToken(token)
                 .orElseThrow(() -> new InvalidTokenException("Token is not found!"));
 
+        User user = userRepository.findByEmail(verifyToken.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+
         user.setActive(true);
-        user.setActivationCode(null);
         userRepository.save(user);
     }
 
